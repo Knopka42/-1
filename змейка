@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SnakeGame
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Game game = new Game(20, 20);
+            game.Start();
+        }
+    }
+
+    public class Game
+    {
+        private int width;
+        private int height;
+        private Snake snake;
+        private Food food;
+        private bool isGameOver;
+
+        public Game(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+            snake = new Snake(width / 2, height / 2);
+            food = new Food(width, height);
+            isGameOver = false;
+        }
+
+        public void Start()
+        {
+            while (!isGameOver)
+            {
+                Draw();
+                Input();
+                Update();
+            }
+            Console.WriteLine("Game Over!");
+        }
+
+        private void Draw()
+        {
+            Console.Clear();
+            for (int y = 0; y < height + 1; y++)
+            {
+                for (int x = 0; x < width + 1; x++)
+                {
+                    if (x == 0 || x == width || y == 0 || y == height)
+                    {
+                        Console.Write("#"); // границы
+                    }
+                    else if (snake.Body.Any(p => p.X == x && p.Y == y))
+                    {
+                        Console.Write("s"); // змейка
+                    }
+                    else if (food.Position.X == x && food.Position.Y == y)
+                    {
+                        Console.Write("@"); // еда
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void Input()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        snake.ChangeDirection(Direction.Up);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        snake.ChangeDirection(Direction.Down);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        snake.ChangeDirection(Direction.Left);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        snake.ChangeDirection(Direction.Right);
+                        break;
+                }
+            }
+        }
+
+        private void Update()
+        {
