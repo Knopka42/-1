@@ -1,0 +1,33 @@
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Пример использования функции
+        string sourceFile = "source.txt"; // Имя исходного файла
+        string destinationFile = "destination.txt"; // Имя целевого файла
+        CopyFile(sourceFile, destinationFile);
+    }
+
+    static void CopyFile(string source, string destination)
+    {
+        // Проверка существования исходного файла
+        if (!File.Exists(source))
+        {
+            Console.WriteLine("Исходный файл не найден.");
+            return;
+        }
+
+        // Удаление содержимого целевого файла, если он существует
+        if (File.Exists(destination))
+        {
+            File.Delete(destination);
+        }
+
+        // Копирование файла
+        File.Copy(source, destination);
+        Console.WriteLine($"Файл '{source}' успешно скопирован в '{destination}'.");
+    }
+}
