@@ -1,0 +1,151 @@
+using System;
+using System.Collections.Generic;
+
+public class Maze
+{
+    private int width;
+    private int height;
+    private char[,] maze;
+    private Random random = new Random();
+
+    public Maze(int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+        maze = new char[width, height];
+        GenerateMaze();
+    }
+
+    private void GenerateMaze()
+    {
+        // Инициализация лабиринта стенами
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                maze[x, y] = '#';
+
+        // Генерация лабиринта с помощью алгоритма Прима
+        List<(int, int)> walls = new List<(int, int)>();
+        int startX = 1, startY = 1;
+        maze[startX, startY] = ' ';
+        walls.Add((startX, startY));
+
+        while (walls.Count > 0)
+        {
+            int index = random.Next(walls.Count);
+            (int wx, int wy) = walls[index];
+            walls.RemoveAt(index);
+
+            // Проверка, сколько пустых ячеек у стены
+            int emptyCount = 0;
+            if (wx > 1 && maze[wx - 1, wy] == ' ') emptyCount++;
+            if (wx < width - 2 && maze[wx + 1, wy] == ' ') emptyCount++;
+            if (wy > 1 && maze[wx, wy - 1] == ' ') emptyCount++;
+            if (wy < height - 2 && maze[wx, wy + 1] == ' ') emptyCount++;
+
+            if (emptyCount == 1)
+            {
+                maze[wx, wy] = ' ';
+                if (wx > 1) walls.Add((wx - 1, wy));
+                if (wx < width - 2) walls.Add((wx + 1, wy));
+                if (wy > 1) walls.Add((wx, wy - 1));
+                if (wy < height - 2) walls.Add((wx, wy + 1));
+            }
+        }
+
+        // Задаем стартовые и конечные точки
+        maze[1, 0] = 'S'; // Начало
+        maze[width - 2, height - 1] = 'E'; // Конец
+    }
+
+    public void DisplayMaze()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Console.Write(maze[x, y]);
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public bool IsWalkable(int x, int y)
+    {
+        return maze[x, y] == ' ';
+    }
+
+    public (int, int) GetExit()
+    {
+        return (width - 2, height - 1);
+    }
+}
+
+
+
+public class Player
+{
+    public int X { get; private set; }
+    public int Y { get; private set; }
+
+    public Player(int startX, int startY)
+    {
+        X = startX;
+        Y = startY;
+    }
+
+    public void Move(int deltaX, int deltaY)
+    {
+        X += deltaX;
+        Y += deltaY;
+    }
+}
+
+
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        int width = 21;
+        int height = 21;
+        Maze maze = new Maze(width, height);
+        Player player = new Player(1, 1);
+
+        while (true)
+        {
+            Console.Clear();
+            maze.DisplayMaze();
+
+            Console.WriteLine("Используйте WASD для движения (W - вверх, A - влево, S - вниз, D - вправо)");
+            Console.Write("Введите команду: ");
+            var key = Console.ReadKey().Key;
+
+            int deltaX = 0;
+            int deltaY = 0;
+
+            switch (key)
+            {
+                case ConsoleKey.W: deltaY = -1; break;
+                case ConsoleKey.A: deltaX = -1; break;
+                case ConsoleKey.S: deltaY = 1; break;
+                case ConsoleKey.D: deltaX = 1; break;
+                default: continue;
+            }
+
+            // Проверка на возможность движения
+ if (maze.IsWalkable(player.X + deltaX, player.Y + deltaY))
+            {
+                player.Move(deltaX, deltaY);
+            }
+
+            // Проверка выхода
+            if (player.X == maze.GetExit().Item1 && player.Y == maze.GetExit().Item2)
+            {
+                Console.Clear();
+                maze.DisplayMaze();
+                Console.WriteLine("Поздравляем, Вы нашли выход!");
+                break;
+            }
+        }
+    }
+}
