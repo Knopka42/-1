@@ -1,0 +1,157 @@
+using System;
+using System.Collections.Generic;
+
+public abstract class Shape
+{
+    public abstract bool ContainsPoint(double x, double y);
+}
+
+public class Rectangle : Shape
+{
+    public double CenterX { get; }
+    public double CenterY { get; }
+    public double Width { get; }
+    public double Height { get; }
+
+    public Rectangle(double centerX, double centerY, double width, double height)
+    {
+        CenterX = centerX;
+        CenterY = centerY;
+        Width = width;
+        Height = height;
+    }
+
+    public override bool ContainsPoint(double x, double y)
+    {
+        return x >= CenterX - Width / 2 && x <= CenterX + Width / 2 &&
+               y >= CenterY - Height / 2 && y <= CenterY + Height / 2;
+    }
+}
+
+public class Circle : Shape
+{
+    public double CenterX { get; }
+    public double CenterY { get; }
+    public double Radius { get; }
+
+    public Circle(double centerX, double centerY, double radius)
+    {
+        CenterX = centerX;
+        CenterY = centerY;
+        Radius = radius;
+    }
+
+    public override bool ContainsPoint(double x, double y)
+    {
+        double dx = x - CenterX;
+        double dy = y - CenterY;
+        return (dx * dx + dy * dy) <= (Radius * Radius);
+    }
+}
+
+
+
+public class ShapeCollection
+{
+    private List<Shape> shapes = new List<Shape>();
+
+    public void AddShape(Shape shape)
+    {
+        shapes.Add(shape);
+    }
+
+    public bool ContainsPoint(double x, double y)
+    {
+        foreach (var shape in shapes)
+        {
+            if (shape.ContainsPoint(x, y))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        ShapeCollection shapeCollection = new ShapeCollection();
+        bool running = true;
+
+        while (running)
+        {
+            Console.WriteLine("1. Добавить прямоугольник");
+            Console.WriteLine("2. Добавить круг");
+            Console.WriteLine("3. Проверить принадлежность точки");
+            Console.WriteLine("0. Выход");
+            Console.Write("Выберите опцию: ");
+            string option = Console.ReadLine();
+
+            switch (option)
+            {
+                case "1":
+                    AddRectangle(shapeCollection);
+                    break;
+                case "2":
+                    AddCircle(shapeCollection);
+                    break;
+                case "3":
+                    CheckPoint(shapeCollection);
+                    break;
+                case "0":
+                    running = false;
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор. Попробуйте снова.");
+                    break;
+            }
+        }
+    }
+
+    private static void AddRectangle(ShapeCollection shapeCollection)
+    {
+        Console.Write("Введите координаты центра (X, Y): ");
+        var center = Console.ReadLine().Split(',');
+        double centerX = double.Parse(center[0]);
+        double centerY = double.Parse(center[1]);
+
+        Console.Write("Введите ширину и высоту (Width, Height): ");
+        var dimensions = Console.ReadLine().Split(',');
+        double width = double.Parse(dimensions[0]);
+        double height = double.Parse(dimensions[1]);
+
+        shapeCollection.AddShape(new Rectangle(centerX, centerY, width, height));
+        Console.WriteLine("Прямоугольник добавлен.");
+    }
+
+    private static void AddCircle(ShapeCollection shapeCollection)
+    {
+        Console.Write("Введите координаты центра (X, Y): ");
+        var center = Console.ReadLine().Split(',');
+        double centerX = double.Parse(center[0]);
+        double centerY = double.Parse(center[1]);
+
+        Console.Write("Введите радиус: ");
+        double radius = double.Parse(Console.ReadLine());
+
+        shapeCollection.AddShape(new Circle(centerX, centerY, radius));
+        Console.WriteLine("Круг добавлен.");
+    }
+
+    private static void CheckPoint(ShapeCollection shapeCollection)
+    {
+        Console.Write("Введите координаты точки (X, Y): ");
+        var point = Console.ReadLine().Split(',');
+        double pointX = double.Parse(point[0]);
+        double pointY = double.Parse(point[1]);
+
+        bool isContained = shapeCollection.ContainsPoint(pointX, pointY);
+        Console.WriteLine(isContained ? "Точка принадлежит множеству." : "Точка не принадлежит множеству.");
+    }
+}
+
