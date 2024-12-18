@@ -1,0 +1,33 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        if (IsMatch(input))
+        {
+            Console.WriteLine("Строка соответствует заданному набору.");
+        }
+        else
+        {
+            Console.WriteLine("Строка не соответствует заданному набору.");
+        }
+    }
+
+    static bool IsMatch(string input)
+    {
+        
+        string patternFullMatch = @"^[0-9]*[^1][0-9]*$"; // Полное соответствие
+        string patternPartialMatch = @"[^1]*"; // Частичное соответствие
+
+        
+        bool isFullMatch = Regex.IsMatch(input, patternFullMatch);        
+        bool isPartialMatch = Regex.IsMatch(input, patternPartialMatch);
+
+        return isFullMatch && isPartialMatch;
+    }
+}
