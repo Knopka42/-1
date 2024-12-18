@@ -1,0 +1,33 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    
+    private static readonly string decimalPattern = @"^[+-]?[1-9]\d*$"; // Десятичные целые числа (без ведущих 0)
+    private static readonly string octalPattern = @"^[+-]?0[0-7]+$"; // Восьмеричные целые числа (ведущий 0)
+    private static readonly string hexPattern = @"^[+-]?0x[0-9A-Fa-f]+$"; // Шестнадцатеричные целые числа (начинаются с 0x)
+
+    
+    public static bool IsInteger(string input)
+    {
+        return Regex.IsMatch(input, decimalPattern) || 
+               Regex.IsMatch(input, octalPattern) || 
+               Regex.IsMatch(input, hexPattern);
+    }
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        if (IsInteger(input))
+        {
+            Console.WriteLine("Строка принадлежит к набору целых чисел со знаком.");
+        }
+        else
+        {
+            Console.WriteLine("Строка не принадлежит к набору целых чисел со знаком.");
+        }
+    }
+}
