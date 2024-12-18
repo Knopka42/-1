@@ -1,0 +1,20 @@
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {        
+        using (StreamWriter writer = new StreamWriter("f.txt"))
+        {            
+            writer.WriteLine("x\tsin(x)");
+           
+            for (double x = 0; x <= 1; x += 0.1)
+            {               
+                writer.WriteLine($"{x}\t{Math.Sin(x)}");
+            }
+        }
+
+        Console.WriteLine("Таблица значений sin(x) успешно записана в файл f.txt.");
+    }
+}
