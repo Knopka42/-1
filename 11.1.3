@@ -1,0 +1,29 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        if (IsMatch(input))
+        {
+            Console.WriteLine("Строка соответствует заданному набору.");
+        }
+        else
+        {
+            Console.WriteLine("Строка не соответствует заданному набору.");
+        }
+    }
+
+    static bool IsMatch(string input)
+    {       
+        string startsWith101Pattern = @"^101.*";        
+        string endsWith101Pattern = @".*101$";
+
+       
+        return Regex.IsMatch(input, startsWith101Pattern) || Regex.IsMatch(input, endsWith101Pattern);
+    }
+}
