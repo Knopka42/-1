@@ -1,0 +1,31 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    
+    private static readonly string patternFull = @"^[+-]?\d+$"; 
+    private static readonly string patternPartial = @"[+-]?\d+";
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        bool isMatchFull = IsMatchFull(input);
+        bool isMatchPartial = IsMatchPartial(input);
+
+        Console.WriteLine($"Строка '{input}' соответствует полному набору: {isMatchFull}");
+        Console.WriteLine($"Строка '{input}' соответствует частичному набору: {isMatchPartial}");
+    }
+
+    static bool IsMatchFull(string input)
+    {
+        return Regex.IsMatch(input, patternFull);
+    }
+
+    static bool IsMatchPartial(string input)
+    {
+        return Regex.IsMatch(input, patternPartial);
+    }
+}
