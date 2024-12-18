@@ -1,0 +1,23 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        bool isFullMatch = IsHexadecimalSigned(input, true);
+        bool isPartialMatch = IsHexadecimalSigned(input, false);
+
+        Console.WriteLine($"Полное соответствие: {isFullMatch}");
+        Console.WriteLine($"Частичное соответствие: {isPartialMatch}");
+    }
+
+    static bool IsHexadecimalSigned(string input, bool fullMatch)
+    {
+        string pattern = fullMatch ? @"^[+-]?0x[0-9A-Fa-f]+$" : @"0x[0-9A-Fa-f]+";
+        return Regex.IsMatch(input, pattern);
+    }
+}
