@@ -1,0 +1,30 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+        
+        bool isValid = IsValidOctalInteger(input);
+        Console.WriteLine($"Строка '{input}' {(isValid ? "принадлежит" : "не принадлежит")} к набору восьмеричных целых чисел со знаком.");
+    }
+
+    static bool IsValidOctalInteger(string input)
+    {
+       
+        string fullPattern = @"^[+-]?0[0-7]+$";        
+        string partPattern = @"0[0-7]+";
+
+        
+        if (Regex.IsMatch(input, fullPattern))
+        {
+            return true;
+        }
+
+        
+        return Regex.IsMatch(input, partPattern);
+    }
+}
