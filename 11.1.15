@@ -1,0 +1,41 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+        
+        bool isDivisibleByThree = CheckIfDivisibleByThree(input);
+        Console.WriteLine(isDivisibleByThree ? "Строка представляет число, делящееся на три." : "Строка не представляет число, делящееся на три.");
+    }
+
+    static bool CheckIfDivisibleByThree(string input)
+    {
+        
+        string fullMatchPattern = @"^(0|[1-9][0-9]*)$";
+        string partMatchPattern = @"\b(0|[1-9][0-9]*)\b";
+
+        
+        if (Regex.IsMatch(input, fullMatchPattern))
+        {
+            int number = int.Parse(input);
+            return number % 3 == 0;
+        }
+
+        
+        MatchCollection matches = Regex.Matches(input, partMatchPattern);
+        foreach (Match match in matches)
+        {
+            int number = int.Parse(match.Value);
+            if (number % 3 == 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
