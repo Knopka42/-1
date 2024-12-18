@@ -1,0 +1,26 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        bool isMatch = CheckString(input);
+        Console.WriteLine(isMatch ? "Строка соответствует заданному набору." : "Строка не соответствует заданному набору.");
+    }
+
+    static bool CheckString(string input)
+    {       
+        string patternDigits = @"^\d+$";        
+        string patternContainsOne = @"1";
+
+        
+        bool isDigits = Regex.IsMatch(input, patternDigits);
+        bool containsOne = Regex.IsMatch(input, patternContainsOne);
+
+        return isDigits && containsOne;
+    }
+}
