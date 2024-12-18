@@ -1,0 +1,23 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        bool result = CheckString(input);
+        Console.WriteLine(result ? "Строка соответствует заданному набору." : "Строка не соответствует заданному набору.");
+    }
+
+    static bool CheckString(string input)
+    {
+       
+        string pattern = "0(.{4})*0";
+        
+        
+        return Regex.IsMatch(input, pattern);
+    }
+}
