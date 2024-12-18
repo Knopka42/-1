@@ -1,0 +1,29 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        bool isFullMatch = IsMatchingFull(input);
+        bool isPartialMatch = IsMatchingPartial(input);
+
+        Console.WriteLine($"Полное соответствие: {isFullMatch}");
+        Console.WriteLine($"Частичное соответствие: {isPartialMatch}");
+    }
+
+    static bool IsMatchingFull(string input)
+    {      
+        string patternFull = @"^(?=.*(\d)\d*$)\d+$";
+        return Regex.IsMatch(input, patternFull);
+    }
+
+    static bool IsMatchingPartial(string input)
+    {        
+        string patternPartial = @"(\d).*?\1";
+        return Regex.IsMatch(input, patternPartial);
+    }
+}
