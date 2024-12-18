@@ -1,0 +1,27 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+
+        // Проверка на наличие трех нулей подряд
+        string patternThreeZeros = @"000"; 
+        string pattern101 = @"101"; 
+
+        bool hasThreeZeros = CheckPattern(input, patternThreeZeros);
+        bool has101 = CheckPattern(input, pattern101);
+
+        Console.WriteLine($"Строка содержит три нуля подряд: {hasThreeZeros}");
+        Console.WriteLine($"Строка содержит '101': {has101}");
+    }
+
+    static bool CheckPattern(string input, string pattern)
+    {
+        
+        return Regex.IsMatch(input, pattern);
+    }
+}
