@@ -1,0 +1,29 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку:");
+        string input = Console.ReadLine();
+        
+        bool isValid = IsValidNumberString(input);
+        Console.WriteLine(isValid ? "Строка соответствует условиям." : "Строка не соответствует условиям.");
+    }
+
+    static bool IsValidNumberString(string input)
+    {        
+        string patternDigits = @"^\d+$";        
+        string patternFirstDigit = @"^(?!.*(\d)\1).*";
+        
+        if (Regex.IsMatch(input, patternDigits))
+        {
+            
+            char firstDigit = input[0];           
+            return Regex.IsMatch(input, patternFirstDigit.Replace(@"\d", firstDigit.ToString()));
+        }
+
+        return false;
+    }
+}
