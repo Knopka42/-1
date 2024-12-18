@@ -1,0 +1,23 @@
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите строку для проверки:");
+        string input = Console.ReadLine();
+        
+        bool isValid = CheckString(input);
+        Console.WriteLine(isValid ? "Строка соответствует условиям." : "Строка не соответствует условиям.");
+    }
+    static bool CheckString(string input)
+    {
+        
+        string pattern = @"(?=(\d*0\d*0\d*)){1}\d{5}";        
+        
+        Match match = Regex.Match(input, pattern);        
+        
+        return match.Success;
+    }
+}
